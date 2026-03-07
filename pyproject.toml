@@ -1,21 +1,20 @@
 [project]
-name = "omnilex-retrieval"
+name = "lexcite"
 version = "0.1.0"
-description = "Omnilex Agentic Retrieval Competition - Swiss Legal Citation Retrieval"
+description = "An AI agent for generating legal citations"
 readme = "README.md"
-license = {text = "Apache-2.0"}
 requires-python = ">=3.10"
 authors = [
-    {name = "Omnilex Team"}
+    {name = "Yuyan Zhao"},
+    {name = "Titouan Aline"}
 ]
-keywords = ["legal-nlp", "retrieval", "swiss-law", "kaggle-competition"]
 
 [build-system]
 requires = ["hatchling"]
 build-backend = "hatchling.build"
 
 [tool.hatch.build.targets.wheel]
-packages = ["src/omnilex"]
+packages = ["src/lexcite"]
 
 [tool.ruff]
 line-length = 100
@@ -23,11 +22,3 @@ target-version = "py310"
 
 [tool.ruff.lint]
 select = ["E", "F", "I", "N", "W", "UP"]
-
-[tool.pytest.ini_options]
-testpaths = ["tests"]
-addopts = "-v"
-
-[tool.mypy]
-python_version = "3.10"
-strict = false

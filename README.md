@@ -1,90 +1,103 @@
-# Omnilex Agentic Retrieval Competition Starter Repo
+# lexcite
 
-Official starter repo for Kaggle competiton https://www.kaggle.com/competitions/llm-agentic-legal-information-retrieval/host/launch-checklist
+# Installation
 
-## Quick Start
+## Virtual environment
+1. Clone the repository.  
 
-### Installation
-
-(Tested with Ubuntu-24.04 in WSL)
+2. Setup environment.  
 
 ```bash
-# Clone the repository
-git clone https://github.com/Omnilex-AI/Omnilex-Agentic-Retrieval-Competition.git
-cd Omnilex-Agentic-Retrieval-Competition
-
-# Create and activate virtual environment
-python3 -m venv .venv
-source .venv/bin/activate  # Linux/macOS
-# .venv\Scripts\activate   # Windows
+# Create and activate conda environment
+conda create -n lexcite python=3.12
+conda activate lexcite
 
 # Install dependencies
-pip install -r requirements.txt
-pip install -r requirements-dev.txt  # for testing/linting
+python -m pip install -r requirements.txt
 
-# Install package in development mode
+# Package the project
 pip install -e .
 ```
 
-### Download Data
+3. Install `llama-cpp-python`. 
 
-Get it from Kaggle into `data` directory
+This project supports multiple LLM providers. By default it uses API-based models via `langchain_openai.ChatOpenAI`, but it can also run local models using `langchain_community.llms.LlamaCpp`, which requires `llama-cpp-python`.  
 
-### Run Baselines
+Windows users: Visual Studio Build Tools or w64devkit is required when building `llama-cpp-python` from source.  
+```bash
+python -m pip install "llama-cpp-python>=0.3.4"
+```
 
-Two baseline notebooks are provided:
-
-1. **Direct Generation** (`notebooks/01_direct_generation_baseline.ipynb`)
-   - Prompts LLM to directly generate citations
-   - Simple but prone to hallucination
-
-2. **Agentic Retrieval** (`notebooks/02_agentic_retrieval_baseline.ipynb`)
-   - Uses ReAct-style agent with search tools
-   - Grounded in actual legal documents
-
-Both notebooks work in VSCode and can be submitted to Kaggle.
-
-### Validate Submission
+(Optional) Enable CUDA support for `llama-cpp-python`. 
 
 ```bash
-python scripts/validate_submission.py submission.csv
+# Install CUDA support version (<cuda_version> could be cu121, cu122, cu124, etc.)
+python -m pip install --force-reinstall --no-cache-dir --only-binary=:all: --extra-index-url https://abetlen.github.io/llama-cpp-python/whl/<cuda_version> llama-cpp-python
+
+# Verify that CUDA support is enabled
+python -c "from llama_cpp import llama_cpp; llama_cpp.llama_print_system_info()"
 ```
 
-## Data Format
+4. 
 
-See Kaggle
+## Docker
+1. Reopen the project in the container.
 
-## Project Structure
-
-```
-├── src/omnilex/           # Core library
-│   ├── citations/         # Citation parsing & normalization
-│   ├── evaluation/        # Metrics & scoring
-│   ├── retrieval/         # BM25 search & tools
-│   └── llm/               # LLM loading & prompts
-├── notebooks/             # Baseline notebooks
-├── utils/                 # Data & utility scripts
-├── tests/                 # Test suite
-└── data/                  # Data directory
+2. Run setup.sh.
+```bash
+bash .devcontainer/setup.sh
 ```
 
-## Requirements
+3. Run `llm_loader.py` to test if it works.
 
-- Python >= 3.10
-- llama-cpp-python (for local LLM inference)
-- rank-bm25 (for keyword search)
-- pandas, numpy, scikit-learn
 
-For Kaggle submissions, you may need to (depending on your solution):
+# 2. Download Data
+## Direct download
+1. Go to the dataset page for the [LLM Agentic Legal Information Retrieval](https://www.kaggle.com/competitions/llm-agentic-legal-information-retrieval/data) Kaggle competition.
 
-1. Upload your GGUF model as a Kaggle dataset
-2. Upload pre-built indices as a Kaggle dataset
-3. Package the `omnilex` library
+2. Click the "Download All" button.
 
-## License
+3. Extract data files into `data/` directory.  
 
-Apache 2.0 - See [LICENSE](LICENSE)
+## Kaggle API
+1. Install `kaggle`.
+```bash
+python -m pip install "kaggle>=2.0.0"
+```
 
-## Contact
+2. Create a [Kaggle API token](https://www.kaggle.com/settings).  
 
-For public questions about the competition please use the "Discussion" tab or open an issue on this repository. For private questions reahc out to host on Kaggle or ari.jordan@omnilex.ai
+Add the username and the key to `.env` file.
+
+3. Run the script. 
+```bash
+python scripts/download_data.py
+```
+
+# 3. Load LLM
+## Use GitHub Model API
+1. Create a [GitHub Personal Access Token](https://github.com/settings/tokens) (classic).  
+
+Add the token to `.env` file.
+
+2. Select a model from [GitHub Models](https://models.github.ai/catalog/models).  
+
+For example, select gpt-4.1 and pass the `model_name` parameter when loading the LLM.
+
+
+## Use llama.cpp
+Place a GGUF model file (compatible with llama.cpp) in the `models/` directory.  
+
+We can download models from the [Hugging Face llama.cpp collection](https://huggingface.co/models?apps=llama.cpp&sort=likes).
+For example, [mistral-7b-instruct-v0.2.Q4_K_M.gguf](https://huggingface.co/TheBloke/Mistral-7B-Instruct-v0.2-GGUF?show_file_info=mistral-7b-instruct-v0.2.Q4_K_M.gguf).  
+
+1. Create a [Hugging Face API token](https://huggingface.co/settings/tokens).
+
+Add the token to `.env` file.
+
+run `utils/download_model.py`.
+
+2. Run the script. 
+```bash
+python scripts/download_model.py
+```

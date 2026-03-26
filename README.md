@@ -101,3 +101,6 @@ run `utils/download_model.py`.
 ```bash
 python scripts/download_model.py
 ```
+
+# 4. use our models
+In the nootbooks section, you can try our models, the queries that are computed are stored in the data directory, if you want to mak your own queries, make a .csv and replace DATASET_MODE in the setup of each chatbot.

@@ -1,7 +1,7 @@
 {
-  "name": "lexcite-dev",
+  "name": "uretriever-dev",
   // Use existing Python images
-  "image": "mcr.microsoft.com/devcontainers/python:1-3.11-bookworm",
+  "image": "mcr.microsoft.com/devcontainers/python:3.11",
   // Execute the bash script after the container is created.
   "postCreateCommand": "bash .devcontainer/setup.sh",
   // Set the working directory

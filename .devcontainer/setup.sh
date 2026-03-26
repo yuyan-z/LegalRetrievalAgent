@@ -19,6 +19,6 @@ fi
 echo ">>> Installing development tools..."
 pip install pytest ipykernel
 
-python -m ipykernel install --user --name lexcite --display-name "Python (lexcite)" || true
+python -m ipykernel install --user --name uretriever --display-name "Python (uretriever)" || true
 
 echo ">>> Setup completed."

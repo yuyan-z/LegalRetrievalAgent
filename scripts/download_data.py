@@ -2,7 +2,7 @@ import zipfile
 import json
 from pathlib import Path
 
-from lexcite.config import KAGGLE_USERNAME, KAGGLE_KEY, RAW_DATA_DIR
+from uretriever.configs.api_config import get_env
 
 
 def create_kaggle_json(username, key) -> None:
@@ -23,13 +23,13 @@ def create_kaggle_json(username, key) -> None:
     print(f"kaggle.json created at {kaggle_file}")
 
 
-def download_kaggle_data(competition: str) -> None:
-    RAW_DATA_DIR.mkdir(parents=True, exist_ok=True)
+def download_kaggle_data(competition: str, save_path: Path) -> None:
+    save_path.mkdir(parents=True, exist_ok=True)
 
-    if not KAGGLE_USERNAME or not KAGGLE_KEY:
-        raise ValueError("No KAGGLE_USERNAME or KAGGLE_KEY found in .env !")
-    
-    create_kaggle_json(KAGGLE_USERNAME, KAGGLE_KEY)
+    kaggle_username = get_env("KAGGLE_USERNAME")
+    kaggle_key = get_env("KAGGLE_KEY")
+
+    create_kaggle_json(kaggle_username, kaggle_key)
     
     from kaggle.api.kaggle_api_extended import KaggleApi
     api = KaggleApi()
@@ -38,19 +38,23 @@ def download_kaggle_data(competition: str) -> None:
     print("Downloading dataset from Kaggle...")
     api.competition_download_files(
         competition=competition,
-        path=str(RAW_DATA_DIR),
+        path=str(save_path),
         quiet=False
     )
-    print(f"Dataset downloaded to: {RAW_DATA_DIR}")
+    print(f"Dataset downloaded to: {save_path}")
 
-    zip_path = RAW_DATA_DIR / f"{competition}.zip"
+    zip_path = save_path / f"{competition}.zip"
     if zip_path.exists():
         print("Extracting dataset zip...")
         with zipfile.ZipFile(zip_path, "r") as zf:
-            zf.extractall(RAW_DATA_DIR)
-        print(f"Dataset zip extracted to {RAW_DATA_DIR}")
+            zf.extractall(save_path)
+        print(f"Dataset zip extracted to {save_path}")
 
 
 if __name__ == "__main__":
+    from uretriever.configs.path_config import DATA_DIR
+
     competition = "llm-agentic-legal-information-retrieval"
-    download_kaggle_data(competition)
+    save_path = DATA_DIR / "raw"
+
+    download_kaggle_data(competition, save_path)

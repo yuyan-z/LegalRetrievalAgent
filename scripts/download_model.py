@@ -21,22 +21,22 @@ def download_hf_model(repo_id: str, filename: str):
 
 
 if __name__ == "__main__":
+    download_config = {
+        "repo_id": "QuantFactory/Mistral-7B-Instruct-v0.3-GGUF",
+        "filename": "Mistral-7B-Instruct-v0.3.Q4_K_M.gguf"
+    }
+    download_hf_model(**download_config)
+
     # download_config = {
-    #     "repo_id": "TheBloke/Mistral-7B-Instruct-v0.2-GGUF",
-    #     "filename": "mistral-7b-instruct-v0.2.Q4_K_M.gguf"
+    #     "repo_id": "Qwen/Qwen2.5-7B-Instruct-GGUF",
+    #     "filename": "qwen2.5-7b-instruct-q4_k_m-00001-of-00002.gguf",
     # }
+    # download_hf_model(**download_config)
 
-    download_config = {
-        "repo_id": "Qwen/Qwen2.5-7B-Instruct-GGUF",
-        "filename": "qwen2.5-7b-instruct-q4_k_m-00001-of-00002.gguf",
-    }
-    download_hf_model(**download_config)
-
-    
-    download_config = {
-        "repo_id": "Qwen/Qwen2.5-7B-Instruct-GGUF",
-        "filename": "qwen2.5-7b-instruct-q4_k_m-00002-of-00002.gguf",
-    }
-    download_hf_model(**download_config)
+    # download_config = {
+    #     "repo_id": "Qwen/Qwen2.5-7B-Instruct-GGUF",
+    #     "filename": "qwen2.5-7b-instruct-q4_k_m-00002-of-00002.gguf",
+    # }
+    # download_hf_model(**download_config)
 
     

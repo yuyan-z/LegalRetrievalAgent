@@ -7,10 +7,15 @@ def load_chat_model(provider: str, **kwargs) -> Any:
 
         return ChatLlamaCpp(**kwargs)
 
-    if provider == "openai":
+    elif provider == "openai":
         from langchain_openai import ChatOpenAI
 
         return ChatOpenAI(**kwargs)
+    
+    elif provider == "ollama":
+        from langchain_community.chat_models import ChatOllama
+
+        return ChatOllama(**kwargs)
 
     raise ValueError(f"Unsupported provider: {provider}")
 
@@ -28,14 +33,22 @@ if __name__ == "__main__":
     #     temperature=0,
     #     max_tokens=512,
     # )
+    # model = load_chat_model(
+    #     provider="llama_cpp",
+    #     model_path=str(MODEL_DIR / "mistral-7b-instruct-v0.2.Q4_K_M.gguf"),
+    #     temperature=0,
+    #     max_tokens=512,
+    #     n_ctx=4096,
+    #     n_threads=4,
+    #     n_gpu_layers=-1,
+    #     verbose=False,
+    # )
     model = load_chat_model(
-        provider="llama_cpp",
-        model_path=str(MODEL_DIR / "mistral-7b-instruct-v0.2.Q4_K_M.gguf"),
+        provider="ollama",
+        model="mistral:7b-instruct-v0.2-q4_K_M",
         temperature=0,
-        max_tokens=512,
-        n_ctx=4096,
-        n_threads=4,
-        n_gpu_layers=-1,
+        num_predict=512,
+        num_ctx=4096,
         verbose=False,
     )
 

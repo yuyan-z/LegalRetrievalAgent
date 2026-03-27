@@ -44,3 +44,12 @@ LLAMACPP_CONFIG = {
     # Verbose logging for debugging and tracing model calls.
     "verbose": True
 }
+
+OLLAMA_CONFIG = {
+    "model": None,  
+
+    "num_predict": None,
+    "num_ctx": 2048,
+
+    "temperature": 0.8
+}

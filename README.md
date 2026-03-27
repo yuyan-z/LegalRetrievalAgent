@@ -101,3 +101,12 @@ python scripts/download_model.py
 
 # 4. Run notebooks
 Run jupyter notebooks `notebooks/few_shot_prompt.ipynb` and `agentic_rag.ipynb`. 
+
+# 5. Results
+
+| Method | Macro Precision | Macro Recall | Macro F1 |
+|---|---:|---:|---:|
+| Agentic RAG | 0.4275 |  0.3371 | 0.3643|
+| Few-shot Prompting | 0.0054 | 0.0120 | 0.0074 |
+| Embedding | 0.0050 | 0.0100 | 0.0067 |
+| BM25 | 0.0000 | 0.0000 | 0.0000 |
